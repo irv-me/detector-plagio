@@ -4,8 +4,10 @@ from itertools import combinations
 import networkx as nx
 import matplotlib.pyplot as plt
 import os
-
+topn = 0
 def construir_grafo_top_similares(top_n=10):
+    global topn
+    topn = top_n
     tablas_hash = procesar_documentos_carpeta()
     G = nx.Graph()
 
@@ -41,12 +43,15 @@ def visualizar_grafo(G, pares_top, guardar_en_png=True):
     etiquetas = { (u, v): f"{G[u][v]['weight']:.2f}" for u, v in G.edges()}
     nx.draw_networkx_edge_labels(G, pos, edge_labels=etiquetas, font_size=6)
 
-    plt.title("Top 10 Documentos Más Similares")
+    plt.title(f"{topn} Documentos Más Similares")
     plt.axis('off')
     plt.tight_layout()
 
     if guardar_en_png:
         base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../resultados"))
+        if not os.path.exists(base_path):
+            os.makedirs(base_path)
+
         nombre_base = "grafo"
         extension = ".png"
         contador = 0
@@ -62,15 +67,33 @@ def visualizar_grafo(G, pares_top, guardar_en_png=True):
                 break
             contador += 1
 
+        # Save the graph image
         plt.savefig(ruta_completa, dpi=300)
         print(f"\n✅ Grafo guardado como imagen en: {ruta_completa}")
 
+        # Generate the corresponding text file name
+        nombre_archivo_txt = nombre_archivo.replace(extension, ".txt")
+        ruta_completa_txt = os.path.join(base_path, nombre_archivo_txt)
+
+        # Write the top pairs to the text file
+        with open(ruta_completa_txt, "w", encoding="utf-8") as archivo:
+            archivo.write(f"Top {topn} Documentos Más Similares:\n\n")
+            for i, (doc1, doc2, sim) in enumerate(pares_top, 1):
+                sim = sim * 100
+                archivo.write(f"{i}. {doc1} <-> {doc2} => Similitud: {sim:.4f}%\n")
+
+        print(f"\n✅ Resultados guardados en: {ruta_completa_txt}")
     plt.show()
 
     # También imprimir los pares en consola
-    print("\nTop 10 pares más similares:")
+    print("\n"f"{topn} pares más similares:")
     for i, (doc1, doc2, sim) in enumerate(pares_top, 1):
-        print(f"{i}. {doc1} <-> {doc2} => Similitud: {sim:.4f}")
+        sim = sim * 100
+        print(f"{i}. {doc1} <-> {doc2} => Similitud: {sim:.4f}%")
+
+    # Y escribir :)
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../resultados"))
+    nombre_base = f"{topn}_similares"
 
 # Ejecutar si se corre directamente
 if __name__ == '__main__':

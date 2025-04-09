@@ -8,6 +8,13 @@
 
 3 | Disfruta !
 
+## Tests
+Al instalar, se da una carpeta llamada tests donde hay varias pruebas para aplicar al codigo
+
+Similitudes | Caso con archivos similares e iguales
+
+MuchoTexto | Caso con archivos con demasiado texto
+
 ## Instalacion
  git clone https://github.com/irv-me/detector-plagio.git
  
