@@ -1,5 +1,5 @@
-from procesar_y_hashear import procesar_documentos_carpeta
-from comparar_similitud import similitud_jaccard, merge_sort
+from src.procesar_y_hashear import procesar_documentos_carpeta
+from src.comparar_similitud import similitud_jaccard, merge_sort
 from itertools import combinations
 import networkx as nx
 import matplotlib.pyplot as plt

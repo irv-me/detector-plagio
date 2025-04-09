@@ -1,4 +1,4 @@
-from procesar_y_hashear import procesar_documentos_carpeta
+from src.procesar_y_hashear import procesar_documentos_carpeta
 from itertools import combinations
 
 # Paso 4: Calcular Similitud de Jaccard entre dos conjuntos
